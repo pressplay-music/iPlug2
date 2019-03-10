@@ -473,6 +473,21 @@ tresult PLUGIN_API IPlugVST3Processor::process(ProcessData& data)
           toAdd.sampleOffset = msg.mOffset;
           outputEvents->addEvent(toAdd);
         }
+        else if (msg.StatusMsg() == IMidiMsg::kControlChange)
+        {
+          toAdd.type = Event::kLegacyMIDICCOutEvent;
+          toAdd.midiCCOut.channel = msg.Channel();
+          toAdd.midiCCOut.controlNumber = msg.mData1;
+          toAdd.midiCCOut.value = msg.mData2;
+          toAdd.midiCCOut.value2 = 0;
+        }
+        else if (msg.StatusMsg() == IMidiMsg::kPitchWheel)
+        {
+          toAdd.type = Event::kLegacyMIDICCOutEvent;
+          toAdd.midiCCOut.channel = msg.Channel();
+          toAdd.midiCCOut.value = msg.mData1;
+          toAdd.midiCCOut.value = msg.mData2;
+        }
         
         mMidiOutputQueue.Remove();
       }
