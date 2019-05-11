@@ -14,6 +14,7 @@
  * @file
  * @brief IPlug Constant definitions, Types, magic numbers
  * @defgroup IPlugConstants IPlug::Constants
+ * IPlug Constant definitions, Types, magic numbers
  * @{
  */
 
@@ -120,6 +121,7 @@ static const int MAX_PARAM_DISPLAY_PRECISION = 6;
 static const int DEFAULT_BLOCK_SIZE = 1024;
 static const double DEFAULT_TEMPO = 120.0;
 static const int kNoParameter = -1;
+static const int kNoValIdx = -1;
 static const int kNoTag = -1;
 
 #define MAX_BUS_CHANS 64 // wild cards in channel i/o strings will result in this many channels
@@ -224,6 +226,13 @@ enum EHost
   // These hosts don't report the host name:
   // EnergyXT2
   // MiniHost
+};
+
+enum EResourceLocation
+{
+  kNotFound = 0,
+  kAbsolutePath,
+  kWinBinary
 };
 
 /**@}*/
