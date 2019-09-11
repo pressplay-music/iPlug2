@@ -23,6 +23,9 @@
 #include "IPlugParameter.h"
 #include "IPlugLogger.h"
 
+using namespace iplug;
+using namespace igraphics;
+
 static int MacKeyCodeToVK(int code)
 {
   switch (code)
@@ -236,11 +239,6 @@ static int MacKeyEventToVK(NSEvent* pEvent, int& flag)
 }
 
 @end
-
-inline int GetMouseOver(IGraphicsMac* pGraphics)
-{
-  return pGraphics->GetMouseOver();
-}
 
 // IGRAPHICS_TEXTFIELDCELL based on...
 
@@ -609,14 +607,14 @@ extern StaticStorage<CoreTextFontDescriptor> sFontDescriptorCache;
   
   if (mGraphics->IsDirty(mDirtyRects))
   {
+    mGraphics->SetAllControlsClean();
+      
 #ifdef IGRAPHICS_GL
     [self.layer setNeedsDisplay];
 #else
     [self render];
 #endif
   }
-  
-  mGraphics->SetAllControlsClean();
 }
 
 - (void) getMouseXY: (NSEvent*) pEvent x: (float&) pX y: (float&) pY
@@ -681,7 +679,7 @@ extern StaticStorage<CoreTextFontDescriptor> sFontDescriptorCache;
   IMouseInfo info = [self getMouseLeft:pEvent];
   if (mGraphics)
   {
-    if ([pEvent clickCount] > 1)
+    if (([pEvent clickCount] - 1) % 2)
     {
       mGraphics->OnMouseDblClick(info.x, info.y, info.ms);
     }
@@ -1020,7 +1018,7 @@ static void MakeCursorFromName(NSCursor*& cursor, const char *name)
   }
 
   CoreTextFontDescriptor* CTFontDescriptor = CoreTextHelpers::GetCTFontDescriptor(text, sFontDescriptorCache);
-  NSFontDescriptor* fontDescriptor = (NSFontDescriptor*) CTFontDescriptor->mDescriptor;
+  NSFontDescriptor* fontDescriptor = (NSFontDescriptor*) CTFontDescriptor->GetDescriptor();
   NSFont* font = [NSFont fontWithDescriptor: fontDescriptor size: text.mSize * 0.75];
   [mTextFieldView setFont: font];
   

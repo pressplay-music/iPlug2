@@ -15,7 +15,7 @@
 # this involves adding the python folder e.g. C:\Python27\ to your %PATH% environment variable
 
 # USAGE:
-# duplicate.py [inputprojectname] [outputprojectname] [manufacturername]
+# duplicate.py [inputprojectname] [outputprojectname] [manufacturername] (outputpath)
 
 # TODO:
 # - indentation of directory structure
@@ -34,7 +34,7 @@ sys.path.insert(0, scriptpath + '/../Scripts/')
 
 from parse_config import parse_config, parse_xcconfig, set_uniqueid
 
-VERSION = "0.93"
+VERSION = "0.94"
 
 # binary files that we don't want to do find and replace inside
 FILTERED_FILE_EXTENSIONS = [".ico",".icns", ".pdf", ".png", ".zip", ".exe", ".wav", ".aif"]
@@ -210,10 +210,13 @@ def main():
   print("copying " + inputprojectname + " folder to " + outputpath)
   copytree(inputprojectname, outputpath, ignore=ignore_patterns(*DONT_COPY))
 
+  oldroot = ""
+  newroot = ""
+  
   if numargs == 4:
     configpath = os.path.join(inputprojectname, "config")
     xcconfig = parse_xcconfig(configpath + "/" + inputprojectname + "-mac.xcconfig")
-    oldroot = xcconfig["ROOT"]
+    oldroot = xcconfig["IPLUG2_ROOT"]
     iplug2folder = os.path.abspath(os.path.join(configpath, oldroot))
     newroot = os.path.relpath(iplug2folder, os.path.join(outputpath, "config"))
   else:

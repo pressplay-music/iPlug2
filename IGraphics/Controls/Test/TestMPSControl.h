@@ -20,6 +20,9 @@
 
 #include "IGraphicsNanoVG.h"
 
+using namespace iplug;
+using namespace igraphics;
+
 /** Control to test IGraphicsNanoVG with Metal Performance Shaders
  *   @ingroup TestControls */
 class TestMPSControl : public IKnobControlBase
@@ -58,7 +61,7 @@ public:
 private:
   int mKernelType = 0;
   NVGframebuffer* mFBO = nullptr;
-  IPopupMenu mMenu {0, false, {"MPSImageGaussianBlur", "MPSImageSobel", "MPSImageThresholdToZero"}};
+  IPopupMenu mMenu {"MPS Type", 0, false, {"MPSImageGaussianBlur", "MPSImageSobel", "MPSImageThresholdToZero"}};
 };
 
 #else
