@@ -1909,6 +1909,11 @@ struct IPattern
   {
     IPattern pattern(EPatternType::Sweep);
 
+    #ifdef IGRAPHICS_SKIA
+      angleStart -= 90;
+      angleEnd -= 90;
+    #endif
+
     float rad = DegToRad(angleStart);
     float c = std::cos(rad);
     float s = std::sin(rad);
