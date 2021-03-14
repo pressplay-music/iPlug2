@@ -442,7 +442,7 @@ ITextControl::ITextControl(const IRECT& bounds, const char* str, const IText& te
 , mSetBoundsBasedOnStr(setBoundsBasedOnStr)
 {
   mIgnoreMouse = true;
-  IControl::mText = text;
+  mText = text;
 }
 
 void ITextControl::OnInit()
@@ -497,7 +497,6 @@ IURLControl::IURLControl(const IRECT& bounds, const char* str, const char* urlSt
 , mOriginalColor(text.mFGColor)
 {
   mIgnoreMouse = false;
-  IControl::mText = text;
 }
 
 void IURLControl::Draw(IGraphics& g)
@@ -551,6 +550,22 @@ void IURLControl::OnMouseDown(float x, float y, const IMouseMod& mod)
   GetUI()->OpenURL(mURLStr.Get());
   GetUI()->ReleaseMouseCapture();
   mClicked = true;
+}
+
+void IURLControl::SetText(const IText& txt)
+{
+  mText = txt;
+  mOriginalColor = txt.mFGColor;
+}
+
+void IURLControl::SetMOColor(const IColor& color)
+{
+  mMOColor = color;
+}
+
+void IURLControl::SetCLColor(const IColor& color)
+{
+  mCLColor = color;
 }
 
 ITextToggleControl::ITextToggleControl(const IRECT& bounds, int paramIdx, const char* offText, const char* onText, const IText& text, const IColor& bgColor)
