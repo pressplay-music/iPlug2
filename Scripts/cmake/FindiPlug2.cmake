@@ -11,8 +11,7 @@ cmake_policy(SET CMP0076 NEW)
 
 set(iPlug2_FOUND 1)
 
-set(IPLUG_APP_NAME ${CMAKE_PROJECT_NAME} CACHE STRING "Name of the VST/AU/App/etc.")
-set(PLUG_NAME ${CMAKE_PROJECT_NAME} CACHE STRING "Name of the VST/AU/App/etc.")
+set(IPLUG_APP_NAME ${PROJECT_NAME} CACHE STRING "Name of the VST/AU/App/etc.")
 
 if (WIN32)
   # Need to determine processor arch for postbuild-win.bat
@@ -60,8 +59,13 @@ CHECK_CXX_COMPILER_FLAG("/arch:AVX" COMPILER_OPT_ARCH_AVX_SUPPORTED)
 # \group:DEPEND Add dependencies on other targets
 # \group:FEATURE Add compile features
 function(iplug_target_add target set_type)
-  cmake_parse_arguments("cfg" "" "" "INCLUDE;SOURCE;DEFINE;OPTION;LINK;LINK_DIR;DEPEND;FEATURE;RESOURCE" ${ARGN})
+  cmake_parse_arguments("cfg" "" "" "NAME;INCLUDE;SOURCE;DEFINE;OPTION;LINK;LINK_DIR;DEPEND;FEATURE;RESOURCE" ${ARGN})
   #message("CALL iplug_add_interface ${target}")
+  if (cfg_NAME)
+    set(PLUG_NAME ${cfg_NAME} CACHE STRING "Name of the VST/AU/App/etc.")
+  else()
+    set(PLUG_NAME ${PROJECT_NAME} CACHE STRING "Name of the VST/AU/App/etc.")
+  endif()
   if (cfg_INCLUDE)
     target_include_directories(${target} ${set_type} ${cfg_INCLUDE})
   endif()
