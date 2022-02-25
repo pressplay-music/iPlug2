@@ -1,0 +1,4 @@
+- create vst bundles on win. script arguments missing
+- next, replace scripts with cmake custom commands (win)
+- combine iplug_target_add and iplug_configure_target into one function
+- windows: configure targets in subdirectories not working yet
