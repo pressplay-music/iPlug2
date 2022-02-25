@@ -10,7 +10,7 @@ if (WIN32)
   endif()
   # Append this for x86, x64, and ARM I guess
   list(APPEND _paths "$ENV{ProgramFiles}/${fn}" "$ENV{ProgramFiles}/Steinberg/${fn}")
-elseif (OS_MAC)
+elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
   set(fn "VST")
   set(_paths "$ENV{HOME}/Library/Audio/Plug-Ins/${fn}" "/Library/Audio/Plug-Ins/${fn}")
 elseif (OS_LINUX)
@@ -69,10 +69,15 @@ function(iplug_configure_vst2 target)
       BUNDLE_EXTENSION "vst"
       PREFIX ""
       SUFFIX "")
-
+      
+    set(install_dir "${VST2_INSTALL_PATH}/${PLUG_NAME}.vst")
+      
     if (CMAKE_GENERATOR STREQUAL "Xcode")
       set(out_dir "${CMAKE_BINARY_DIR}/$<CONFIG>/${PLUG_NAME}.vst")
       set(res_dir "")
+    else()
+      set(out_dir "${CMAKE_BINARY_DIR}/${PLUG_NAME}.vst")
+      set(res_dir "${CMAKE_BINARY_DIR}/${PLUG_NAME}.vst/Contents/Resources")
     endif()
 
     add_custom_command(TARGET ${target} POST_BUILD
