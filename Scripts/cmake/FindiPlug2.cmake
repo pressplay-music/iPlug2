@@ -390,14 +390,16 @@ iplug_source_tree(iPlug2_Synth)
 #! iplug_configure_target : Configure a target for the given output type
 #
 function(iplug_configure_target target target_type)
-  set_property(TARGET ${target} PROPERTY CXX_STANDARD ${IPLUG2_CXX_STANDARD})
+  target_compile_features(${target} PUBLIC cxx_std_17)
 
   # ALL Configurations
   if (WIN32)
     # On Windows ours fonts are included in the RC file, meaning we need to include main.rc
     # in ALL our builds. Yay for platform-specific bundling!
     set(_res "${CMAKE_SOURCE_DIR}/resources/main.rc")
-    iplug_target_add(${target} PUBLIC RESOURCE ${_res})
+    iplug_target_add(${target} PUBLIC RESOURCE ${_res}
+      INCLUDE ${CMAKE_SOURCE_DIR}/resources ${CMAKE_SOURCE_DIR}/resources/fonts ${CMAKE_SOURCE_DIR}/resources/img
+    )
     source_group("Resources" FILES ${_res})
     
   elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin") 

@@ -33,26 +33,27 @@ set(RES_FILES
 # For typing convenience the target name is put into a variable.
 set(tgt ${CMAKE_PROJECT_NAME}-app)
 add_executable(${tgt} WIN32 MACOSX_BUNDLE ${SRC_FILES})
-target_compile_features(${tgt} PUBLIC cxx_std_17)
+#target_compile_features(${tgt} PUBLIC cxx_std_17)
 iplug_target_add(${tgt} PUBLIC LINK iPlug2_NANOVG iPlug2_GL2 RESOURCE ${RES_FILES} INCLUDE ${dir} ${dir}/resources)
 # You MUST call iplug_configure_target(<target_name> <app|vst2|vst3|...>) for things to build correctly.
 iplug_configure_target(${tgt} app)
 
 set(tgt ${CMAKE_PROJECT_NAME}-vst2)
 add_library(${tgt} MODULE ${SRC_FILES})
-target_compile_features(${tgt} PUBLIC cxx_std_17)
-iplug_target_add(${tgt} PUBLIC LINK iPlug2_NANOVG iPlug2_GL2 RESOURCE ${RES_FILES} INCLUDE ${dir} ${dir}/resources)
+#target_compile_features(${tgt} PUBLIC cxx_std_17)
+iplug_target_add(${tgt} PUBLIC LINK iPlug2_NANOVG iPlug2_GL2 RESOURCE ${RES_FILES} INCLUDE ${dir})
 iplug_configure_target(${tgt} vst2)
 
 set(tgt ${CMAKE_PROJECT_NAME}-vst3)
 add_library(${tgt} MODULE ${SRC_FILES})
-target_compile_features(${tgt} PUBLIC cxx_std_17)
-iplug_target_add(${tgt} PUBLIC LINK iPlug2_NANOVG iPlug2_GL2 RESOURCE ${RES_FILES} INCLUDE ${dir} ${dir}/resources)
+#target_compile_features(${tgt} PUBLIC cxx_std_17)
+iplug_target_add(${tgt} PUBLIC LINK iPlug2_NANOVG iPlug2_GL2 RESOURCE ${RES_FILES} INCLUDE ${dir})
 iplug_configure_target(${tgt} vst3)
 
-set(tgt ${CMAKE_PROJECT_NAME}-au2)
-add_library(${tgt} MODULE ${SRC_FILES})
-target_compile_features(${tgt} PUBLIC cxx_std_17)
-iplug_target_add(${tgt} PUBLIC LINK iPlug2_NANOVG iPlug2_GL2 RESOURCE ${RES_FILES} INCLUDE ${dir} ${dir}/resources)
-iplug_configure_target(${tgt} au2)
-
+if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
+    set(tgt ${CMAKE_PROJECT_NAME}-au2)
+    add_library(${tgt} MODULE ${SRC_FILES})
+    #target_compile_features(${tgt} PUBLIC cxx_std_17)
+    iplug_target_add(${tgt} PUBLIC LINK iPlug2_NANOVG iPlug2_GL2 RESOURCE ${RES_FILES} INCLUDE ${dir} ${dir}/resources)
+    iplug_configure_target(${tgt} au2)
+endif()
