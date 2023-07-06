@@ -11,8 +11,8 @@ cmake_policy(SET CMP0076 NEW)
 
 set(iPlug2_FOUND 1)
 
-set(IPLUG_APP_NAME ${CMAKE_PROJECT_NAME} CACHE STRING "Name of the VST/AU/App/etc.")
-set(PLUG_NAME ${CMAKE_PROJECT_NAME} CACHE STRING "Name of the VST/AU/App/etc.")
+set(IPLUG_APP_NAME ${PROJECT_NAME} CACHE STRING "Name of the VST/AU/App/etc.")
+set(PLUG_NAME ${PROJECT_NAME} CACHE STRING "Name of the VST/AU/App/etc.")
 
 if (WIN32)
   # Need to determine processor arch for postbuild-win.bat

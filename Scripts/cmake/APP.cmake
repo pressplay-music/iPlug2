@@ -92,8 +92,8 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "Linux")
       LICE_Core LICE_PNG LICE_ZLIB PkgConfig::Gtk_30 PkgConfig::Gdk_30 PkgConfig::Glib_20 "X11" "Xi"
     SOURCE
       ${swell_src}
-      ${CMAKE_SOURCE_DIR}/resources/main.rc_mac_dlg
-      ${CMAKE_SOURCE_DIR}/resources/main.rc_mac_menu
+      ${CMAKE_CURRENT_SOURCE_DIR}/resources/main.rc_mac_dlg
+      ${CMAKE_CURRENT_SOURCE_DIR}/resources/main.rc_mac_menu
   )
 
   # RtAudio
@@ -121,30 +121,30 @@ macro(iplug_configure_app target)
   iplug_target_add(${target} PUBLIC LINK iPlug2_APP)
 
   if (WIN32)
-    set(res_dir "${CMAKE_BINARY_DIR}/${PLUG_NAME}-app/resources")
+    set(res_dir "${CMAKE_CURRENT_BINARY_DIR}/${PLUG_NAME}-app/resources")
 
     set_target_properties(${target} PROPERTIES
       OUTPUT_NAME "${PLUG_NAME}"
       RUNTIME_OUTPUT_DIRECTORY "${PLUG_NAME}-app"
     )
     add_custom_command(TARGET ${target} POST_BUILD
-      COMMAND "${CMAKE_BINARY_DIR}/postbuild-win.bat"
+      COMMAND "${CMAKE_CURRENT_BINARY_DIR}/postbuild-win.bat"
       ARGS "\"$<TARGET_FILE:${target}>\"" "\".exe\""
     )
     
   elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-    set(res_dir "${CMAKE_BINARY_DIR}/${PLUG_NAME}.app/Contents/Resources")
+    set(res_dir "${CMAKE_CURRENT_BINARY_DIR}/${PLUG_NAME}.app/Contents/Resources")
     # Set the Info.plist file and add required resources
     set(_res 
-      "${CMAKE_SOURCE_DIR}/resources/${PLUG_NAME}.icns"
-      "${CMAKE_SOURCE_DIR}/resources/${PLUG_NAME}-macOS-MainMenu.xib")
+      "${CMAKE_CURRENT_SOURCE_DIR}/resources/${PLUG_NAME}.icns"
+      "${CMAKE_CURRENT_SOURCE_DIR}/resources/${PLUG_NAME}-macOS-MainMenu.xib")
     source_group("Resources" FILES ${_res})
     iplug_target_add(${target} PUBLIC SOURCE ${_res} RESOURCE ${_res})
     set_target_properties(${target} PROPERTIES 
-      MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/resources/${PLUG_NAME}-macOS-Info.plist")
+      MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/resources/${PLUG_NAME}-macOS-Info.plist")
 
   elseif (CMAKE_SYSTEM_NAME MATCHES "Linux")
-    set(res_dir "${CMAKE_BINARY_DIR}/${PLUG_NAME}-app/resources")
+    set(res_dir "${CMAKE_CURRENT_BINARY_DIR}/${PLUG_NAME}-app/resources")
     set_target_properties(${target} PROPERTIES
       OUTPUT_NAME "${PLUG_NAME}"
       RUNTIME_OUTPUT_DIRECTORY "${PLUG_NAME}-app"

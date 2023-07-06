@@ -126,7 +126,7 @@ iplug_target_add(iPlug2_NanoVG INTERFACE
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
   set(_src ${IGRAPHICS_SRC}/Drawing/IGraphicsNanoVG_src.m  )
   iplug_target_add(iPlug2_NanoVG INTERFACE SOURCE ${_src})
-  set_property (SOURCE ${_src} APPEND_STRING PROPERTY COMPILE_FLAGS "-fobjc-arc")
+  set_property (SOURCE ${_src} DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR} APPEND_STRING PROPERTY COMPILE_FLAGS "-fobjc-arc")
 endif()
 iplug_source_tree(iPlug2_NanoVG)
 
