@@ -162,10 +162,12 @@ function(iplug_configure_aax target project_name)
     endif()
 
     # Copy icon file if present
-    set(ICON_FILE ${PLUG_RESOURCES_DIR}/${project_name}.ico)
-    if(EXISTS ${ICON_FILE})
+    set(AAX_BUNDLE_DIR "${CMAKE_BINARY_DIR}/out/${project_name}.aaxplugin")
+    if(EXISTS "${AAX_SDK_DIR}/Utilities/PlugIn.ico")
+      file(WRITE "${CMAKE_BINARY_DIR}/iplug2_pkginfo/desktop.ini" "[.ShellClassInfo]\nIconResource=PlugIn.ico,0\n")
       add_custom_command(TARGET ${target} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy "${ICON_FILE}" "${CMAKE_BINARY_DIR}/out/${project_name}.aaxplugin/Contents/PlugIn.ico"
+        COMMAND ${CMAKE_COMMAND} -E copy "${AAX_SDK_DIR}/Utilities/PlugIn.ico" "${AAX_BUNDLE_DIR}/PlugIn.ico"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/iplug2_pkginfo/desktop.ini" "${AAX_BUNDLE_DIR}/desktop.ini"
         COMMENT "Copying AAX icon for ${project_name}"
       )
     endif()

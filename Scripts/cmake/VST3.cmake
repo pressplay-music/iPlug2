@@ -148,6 +148,7 @@ function(iplug_configure_vst3 target project_name)
     endif()
 
     set(VST3_OUTPUT_DIR "${CMAKE_BINARY_DIR}/out/${project_name}.vst3/Contents/${VST3_ARCH}")
+    set(VST3_BUNDLE_DIR "${CMAKE_BINARY_DIR}/out/${project_name}.vst3")
 
     # Build directly into bundle structure
     # Set for all configs to avoid multi-config generator adding /Release/ etc
@@ -163,9 +164,19 @@ function(iplug_configure_vst3 target project_name)
 
     # Create Resources folder for bundle completeness
     add_custom_command(TARGET ${target} POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/out/${project_name}.vst3/Contents/Resources"
+      COMMAND ${CMAKE_COMMAND} -E make_directory "${VST3_BUNDLE_DIR}/Contents/Resources"
       COMMENT "Creating VST3 bundle structure for ${project_name}"
     )
+
+    # Copy bundle folder icon if present
+    set(DESKTOP_INI "${VST3_SDK_DIR}/cmake/templates/desktop.ini.in")
+    if(EXISTS "${DESKTOP_INI}")
+      add_custom_command(TARGET ${target} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy "${VST3_SDK_DIR}/cmake/templates/VST_Logo_Steinberg.ico" "${VST3_BUNDLE_DIR}/PlugIn.ico"
+        COMMAND ${CMAKE_COMMAND} -E copy "${DESKTOP_INI}" "${VST3_BUNDLE_DIR}/desktop.ini"
+        COMMENT "Copying icon for ${project_name}"
+      )
+    endif()
   elseif(APPLE)
     # VST3 on macOS is a bundle with .vst3 extension
     set_target_properties(${target} PROPERTIES
